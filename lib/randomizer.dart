@@ -98,17 +98,34 @@ enum Attack { melee, ranged }
 
 enum Expansion { base, shadowOfNerekhall, chainsThatRust }
 
-enum Trait {
-  building,
-  cave,
-  civilized,
-  cold,
-  cursed,
-  dark,
-  hot,
-  mountain,
-  water,
-  wilderness,
+class Trait {
+  final String name;
+
+  const Trait._(this.name);
+
+  static const building = const Trait._('Building');
+  static const cave = const Trait._('Cave');
+  static const civilized = const Trait._('Civilized');
+  static const cold = const Trait._('Cold');
+  static const cursed = const Trait._('Cursed');
+  static const dark = const Trait._('Dark');
+  static const hot = const Trait._('Hot');
+  static const mountain = const Trait._('Mountain');
+  static const water = const Trait._('Water');
+  static const wilderness = const Trait._('Wilderness');
+
+  static const List<Trait> values = const [
+    building,
+    cave,
+    civilized,
+    cold,
+    cursed,
+    dark,
+    hot,
+    mountain,
+    water,
+    wilderness
+  ];
 }
 
 enum Size {
