@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 leading: const CircleAvatar(child: const Text('#')),
                 trailing: new Text(
                   numberOfGroups.toString(),
-                  style: const TextStyle(fontSize: 32.0),
+                  style: const TextStyle(fontSize: 20.0),
                 ),
                 title: new Slider(
                   value: numberOfGroups.toDouble(),
