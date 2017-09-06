@@ -45,40 +45,80 @@ class Monster {
   final Expansion expansion;
   final Set<Trait> traits;
   final Attack attack;
+  final Size size;
 
-  Monster._(this.name, this.attack, this.traits, this.expansion);
+  Monster._(this.name, this.attack, this.traits, this.expansion, this.size);
 
   factory Monster.fleshMoulder() => new Monster._(
-      "Flesh Moulder",
-      Attack.ranged,
-      new Set.from([Trait.cursed, Trait.civilized]),
-      Expansion.base);
+        "Flesh Moulder",
+        Attack.ranged,
+        new Set.from([Trait.cursed, Trait.civilized]),
+        Expansion.base,
+        Size.small,
+      );
 
   factory Monster.goblinArcher() => new Monster._(
       "Goblin Archer",
       Attack.ranged,
       new Set.from([Trait.building, Trait.cave]),
-      Expansion.base);
+      Expansion.base,
+      Size.small);
 
-  factory Monster.ettin() => new Monster._("Ettin", Attack.melee,
-      new Set.from([Trait.mountain, Trait.cave]), Expansion.base);
+  factory Monster.ettin() => new Monster._(
+        "Ettin",
+        Attack.melee,
+        new Set.from([Trait.mountain, Trait.cave]),
+        Expansion.base,
+        Size.huge,
+      );
 
-  factory Monster.elemental() => new Monster._("Elemental", Attack.ranged,
-      new Set.from([Trait.cold, Trait.hot]), Expansion.base);
-  factory Monster.barghest() => new Monster._("Barghest", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.dark]), Expansion.base);
+  factory Monster.elemental() => new Monster._(
+        "Elemental",
+        Attack.ranged,
+        new Set.from([Trait.cold, Trait.hot]),
+        Expansion.base,
+        Size.huge,
+      );
 
-  factory Monster.caveSpider() => new Monster._("Cave Spider", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.cave]), Expansion.base);
+  factory Monster.barghest() => new Monster._(
+        "Barghest",
+        Attack.melee,
+        new Set.from([Trait.wilderness, Trait.dark]),
+        Expansion.base,
+        Size.medium,
+      );
 
-  factory Monster.merriod() => new Monster._("Merriod", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.water]), Expansion.base);
+  factory Monster.caveSpider() => new Monster._(
+        "Cave Spider",
+        Attack.melee,
+        new Set.from([Trait.wilderness, Trait.cave]),
+        Expansion.base,
+        Size.small,
+      );
 
-  factory Monster.shadowDragon() => new Monster._("Shadow Dragon", Attack.melee,
-      new Set.from([Trait.dark, Trait.cave]), Expansion.base);
+  factory Monster.merriod() => new Monster._(
+        "Merriod",
+        Attack.melee,
+        new Set.from([Trait.wilderness, Trait.water]),
+        Expansion.base,
+        Size.huge,
+      );
 
-  factory Monster.zombie() => new Monster._("Zombie", Attack.melee,
-      new Set.from([Trait.cursed, Trait.building]), Expansion.base);
+  factory Monster.shadowDragon() => new Monster._(
+        "Shadow Dragon",
+        Attack.melee,
+        new Set.from([Trait.dark, Trait.cave]),
+        Expansion.base,
+        Size.massive,
+      );
+
+  factory Monster.zombie() => new Monster._(
+        "Zombie",
+        Attack.melee,
+        new Set.from([Trait.cursed, Trait.building]),
+        Expansion.base,
+        Size.small,
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -128,7 +168,7 @@ class Trait {
     hot,
     mountain,
     water,
-    wilderness
+    wilderness,
   ];
 }
 
