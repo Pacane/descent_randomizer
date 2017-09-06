@@ -120,6 +120,38 @@ class Monster {
         Size.small,
       );
 
+  factory Monster.changeling() => new Monster._(
+        "Changeling",
+        Attack.melee,
+        new Set.from([Trait.cursed, Trait.civilized]),
+        Expansion.shadowOfNerekhall,
+        Size.small,
+      );
+
+  factory Monster.ratSwarm() => new Monster._(
+        "Rat swarm",
+        Attack.melee,
+        new Set.from([Trait.building, Trait.dark]),
+        Expansion.shadowOfNerekhall,
+        Size.medium,
+      );
+
+  factory Monster.ironbound() => new Monster._(
+        "Ironbound",
+        Attack.melee,
+        new Set.from([Trait.building, Trait.civilized]),
+        Expansion.shadowOfNerekhall,
+        Size.small,
+      );
+
+  factory Monster.infernaelHulk() => new Monster._(
+        "Infernael Hulk",
+        Attack.melee,
+        new Set.from([Trait.cursed, Trait.hot]),
+        Expansion.shadowOfNerekhall,
+        Size.huge,
+      );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -170,6 +202,8 @@ class Trait {
     water,
     wilderness,
   ];
+
+  String get assetPath => 'lib/assets/${name.toLowerCase()}.png';
 }
 
 enum Size {

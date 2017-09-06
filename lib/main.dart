@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class TraitCheckbox extends CheckboxListTile {
+class TraitCheckbox extends ListTile {
   final Trait trait;
 
   TraitCheckbox(Trait t, Map<Trait, bool> traitFilters,
@@ -99,8 +99,9 @@ class TraitCheckbox extends CheckboxListTile {
       : trait = t,
         super(
             key: new ObjectKey(t),
-            value: traitFilters[t] == true,
-            onChanged: onChanged,
+            trailing: new Checkbox(
+                value: traitFilters[t] == true, onChanged: onChanged),
+            leading: new Image.asset(t.assetPath),
             title: new Text(t.name));
 }
 
@@ -110,8 +111,9 @@ class MonsterWidget extends ListTile {
   MonsterWidget(String name)
       : name = name,
         super(
-            title: new Text(
-          name,
-          style: new TextStyle(color: Colors.red),
-        ));
+          title: new Text(
+            name,
+            style: new TextStyle(color: Colors.red),
+          ),
+        );
 }
