@@ -10,11 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Descent Open Group Randomizer',
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new MyHomePage(title: 'Descent open group randomizer'),
+      home: new MyHomePage(title: 'Descent Open Group Randomizer'),
     );
   }
 }
@@ -53,14 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new ListView(
           padding: new EdgeInsets.all(8.0),
           children: <Widget>[]
-            ..add(new TextField(
-              decoration: const InputDecoration(
-                  hintText: '2', labelText: '# of open groups'),
-              keyboardType: TextInputType.number,
-              autocorrect: false,
-              onChanged: (String t) =>
-                  setState(() => numberOfGroups = int.parse(t)),
-            ))
+            ..add(new ListTile(
+                leading: const CircleAvatar(child: const Text('#')),
+                trailing: new Text(
+                  numberOfGroups.toString(),
+                  style: const TextStyle(fontSize: 32.0),
+                ),
+                title: new Slider(
+                  value: numberOfGroups.toDouble(),
+                  max: 5.0,
+                  min: 1.0,
+                  onChanged: (double n) =>
+                      setState(() => numberOfGroups = n.round()),
+                )))
             ..addAll(traits.map<Widget>((Trait t) => new TraitCheckbox(
                   t,
                   traitFilters,

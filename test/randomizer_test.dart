@@ -36,5 +36,16 @@ main() {
 
       expect(actual, hasLength(expectedSize));
     });
+
+    test('Randomize more groups than possible returns all possible monsters',
+        () {
+      var traits = [Trait.hot];
+      var queriedSize = 2;
+      var expectedSize = 1;
+
+      var actual = randomizeMonsterBy(queriedSize, traits: traits);
+
+      expect(actual, hasLength(expectedSize));
+    });
   });
 }

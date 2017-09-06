@@ -27,10 +27,14 @@ List<Monster> randomizeMonsterBy(int count, {List<Trait> traits}) {
       return result;
     }
 
-    var nextIndex = rng.nextInt(filteredMonsters.length - 1);
+    int index = 0;
 
-    result.add(filteredMonsters[nextIndex]);
-    filteredMonsters.removeAt(nextIndex);
+    if (filteredMonsters.length > 1) {
+      index = rng.nextInt(filteredMonsters.length - 1);
+    }
+
+    result.add(filteredMonsters[index]);
+    filteredMonsters.removeAt(index);
   }
 
   return result;
