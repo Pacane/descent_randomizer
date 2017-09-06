@@ -30,10 +30,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Trait> traits = Trait.values;
-  Map<Trait, bool> traitFilters = {};
+  final Map<Trait, bool> traitFilters = {};
+
+  int numberOfGroups = 2;
+  List<Monster> foundMonsters = [];
 
   @override
   void initState() {
+    super.initState();
     traits.forEach((Trait t) {
       traitFilters[t] = false;
     });
@@ -46,17 +50,37 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
       ),
       body: new Center(
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: traits
-                .map((Trait t) => new TraitCheckbox(
-                      t,
-                      traitFilters,
-                      onChanged: (bool v) => setState(() {
-                            traitFilters[t] = v;
-                          }),
-                    ))
-                .toList()),
+        child: new ListView(
+          padding: new EdgeInsets.all(8.0),
+          children: <Widget>[]
+            ..add(new TextField(
+              decoration: const InputDecoration(
+                  hintText: '2', labelText: '# of open groups'),
+              keyboardType: TextInputType.number,
+              autocorrect: false,
+              onChanged: (String t) =>
+                  setState(() => numberOfGroups = int.parse(t)),
+            ))
+            ..addAll(traits.map<Widget>((Trait t) => new TraitCheckbox(
+                  t,
+                  traitFilters,
+                  onChanged: (bool v) => setState(() {
+                        traitFilters[t] = v;
+                      }),
+                )))
+            ..add(new RaisedButton(
+                onPressed: () => setState(() {
+                      var activeTraitFilters = traits
+                          .where((Trait t) => traitFilters[t] == true)
+                          .toList();
+                      foundMonsters = randomizeMonsterBy(numberOfGroups,
+                          traits: activeTraitFilters);
+                      print('Found monsters = $foundMonsters');
+                    }),
+                child: const Text('Randomize')))
+            ..addAll(
+                foundMonsters.map((Monster m) => new MonsterWidget(m.name))),
+        ),
       ),
     );
   }
@@ -73,4 +97,16 @@ class TraitCheckbox extends CheckboxListTile {
             value: traitFilters[t] == true,
             onChanged: onChanged,
             title: new Text(t.name));
+}
+
+class MonsterWidget extends ListTile {
+  final String name;
+
+  MonsterWidget(String name)
+      : name = name,
+        super(
+            title: new Text(
+          name,
+          style: new TextStyle(color: Colors.red),
+        ));
 }
