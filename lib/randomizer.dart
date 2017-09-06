@@ -1,24 +1,15 @@
 import 'dart:math';
 
 List<Monster> allMonsters = [
-  new Monster("Flesh Moulder", Attack.ranged,
-      new Set.from([Trait.cursed, Trait.civilized]), Expansion.base),
-  new Monster("Goblin Archer", Attack.ranged,
-      new Set.from([Trait.building, Trait.cave]), Expansion.base),
-  new Monster("Ettin", Attack.melee, new Set.from([Trait.mountain, Trait.cave]),
-      Expansion.base),
-  new Monster("Elemental", Attack.ranged, new Set.from([Trait.cold, Trait.hot]),
-      Expansion.base),
-  new Monster("Barghest", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.dark]), Expansion.base),
-  new Monster("Cave Spider", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.cave]), Expansion.base),
-  new Monster("Merriod", Attack.melee,
-      new Set.from([Trait.wilderness, Trait.water]), Expansion.base),
-  new Monster("Shadow Dragon", Attack.melee,
-      new Set.from([Trait.dark, Trait.cave]), Expansion.base),
-  new Monster("Zombie", Attack.melee,
-      new Set.from([Trait.cursed, Trait.building]), Expansion.base)
+  new Monster.fleshMoulder(),
+  new Monster.zombie(),
+  new Monster.caveSpider(),
+  new Monster.barghest(),
+  new Monster.elemental(),
+  new Monster.ettin(),
+  new Monster.goblinArcher(),
+  new Monster.merriod(),
+  new Monster.shadowDragon(),
 ];
 
 List<Monster> filterMonstersBy({List<Trait> traits}) {
@@ -32,10 +23,11 @@ List<Monster> randomizeMonsterBy(int count, {List<Trait> traits}) {
   var rng = new Random();
   var result = <Monster>[];
   for (int i = 0; i < count; ++i) {
-    var nextIndex = rng.nextInt(filteredMonsters.length - 1);
-    if (nextIndex < 0) {
+    if (filteredMonsters.isEmpty) {
       return result;
     }
+
+    var nextIndex = rng.nextInt(filteredMonsters.length - 1);
 
     result.add(filteredMonsters[nextIndex]);
     filteredMonsters.removeAt(nextIndex);
@@ -50,7 +42,39 @@ class Monster {
   final Set<Trait> traits;
   final Attack attack;
 
-  Monster(this.name, this.attack, this.traits, this.expansion);
+  Monster._(this.name, this.attack, this.traits, this.expansion);
+
+  factory Monster.fleshMoulder() => new Monster._(
+      "Flesh Moulder",
+      Attack.ranged,
+      new Set.from([Trait.cursed, Trait.civilized]),
+      Expansion.base);
+
+  factory Monster.goblinArcher() => new Monster._(
+      "Goblin Archer",
+      Attack.ranged,
+      new Set.from([Trait.building, Trait.cave]),
+      Expansion.base);
+
+  factory Monster.ettin() => new Monster._("Ettin", Attack.melee,
+      new Set.from([Trait.mountain, Trait.cave]), Expansion.base);
+
+  factory Monster.elemental() => new Monster._("Elemental", Attack.ranged,
+      new Set.from([Trait.cold, Trait.hot]), Expansion.base);
+  factory Monster.barghest() => new Monster._("Barghest", Attack.melee,
+      new Set.from([Trait.wilderness, Trait.dark]), Expansion.base);
+
+  factory Monster.caveSpider() => new Monster._("Cave Spider", Attack.melee,
+      new Set.from([Trait.wilderness, Trait.cave]), Expansion.base);
+
+  factory Monster.merriod() => new Monster._("Merriod", Attack.melee,
+      new Set.from([Trait.wilderness, Trait.water]), Expansion.base);
+
+  factory Monster.shadowDragon() => new Monster._("Shadow Dragon", Attack.melee,
+      new Set.from([Trait.dark, Trait.cave]), Expansion.base);
+
+  factory Monster.zombie() => new Monster._("Zombie", Attack.melee,
+      new Set.from([Trait.cursed, Trait.building]), Expansion.base);
 
   @override
   bool operator ==(Object other) =>
@@ -61,6 +85,9 @@ class Monster {
           expansion == other.expansion &&
           traits.containsAll(other.traits) &&
           attack == other.attack;
+
+  @override
+  String toString() => '$name';
 
   @override
   int get hashCode =>
