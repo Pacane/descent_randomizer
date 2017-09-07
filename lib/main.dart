@@ -30,7 +30,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Trait> traits = Trait.values;
+  final List<Expansion> expansions = Expansion.values;
+
   final Map<Trait, bool> traitFilters = {};
+  final Map<Expansion, bool> expansionFilters = {};
 
   int numberOfGroups = 2;
   List<Monster> foundMonsters = [];
@@ -41,6 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
     traits.forEach((Trait t) {
       traitFilters[t] = false;
     });
+
+    expansions.forEach((Expansion e) {
+      expansionFilters[e] = false;
+    });
+
+    expansionFilters[Expansion.base] = true;
   }
 
   @override
@@ -49,12 +58,35 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[]
+            ..add(new DrawerHeader(
+                child: const Text(
+              'Select your expansions',
+              style: const TextStyle(fontSize: 32.0),
+            )))
+            ..addAll(
+              expansions.map(
+                (Expansion e) => new CheckboxListTile(
+                      value: expansionFilters[e] == true,
+                      title: new Text(e.name),
+                      onChanged: (bool v) => setState(() {
+                            expansionFilters[e] = v;
+                          }),
+                    ),
+              ),
+            ),
+        ),
+      ),
       body: new Center(
         child: new ListView(
           padding: new EdgeInsets.all(8.0),
           children: <Widget>[]
             ..add(new ListTile(
-                leading: const CircleAvatar(child: const Text('#')),
+                leading: const CircleAvatar(
+                  child: const Text('#'),
+                ),
                 trailing: new Text(
                   numberOfGroups.toString(),
                   style: const TextStyle(fontSize: 20.0),
@@ -73,7 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         traitFilters[t] = v;
                       }),
                 )))
-            ..add(new RaisedButton(
+            ..add(
+              new RaisedButton(
                 onPressed: () => setState(() {
                       var activeTraitFilters = traits
                           .where((Trait t) => traitFilters[t] == true)
@@ -82,7 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           traits: activeTraitFilters);
                       print('Found monsters = $foundMonsters');
                     }),
-                child: const Text('Randomize')))
+                child: const Text('Randomize'),
+              ),
+            )
             ..addAll(
                 foundMonsters.map((Monster m) => new MonsterWidget(m.name))),
         ),

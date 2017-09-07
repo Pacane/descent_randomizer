@@ -172,7 +172,21 @@ class Monster {
 
 enum Attack { melee, ranged }
 
-enum Expansion { base, shadowOfNerekhall, chainsThatRust }
+class Expansion {
+  final String name;
+
+  const Expansion._(this.name);
+
+  static Expansion base = const Expansion._('Descent 2E Base Set');
+  static Expansion chainsThatRust = const Expansion._('The Chains That Rust');
+  static Expansion shadowOfNerekhall = const Expansion._('Shadow of Nerekhall');
+
+  static List<Expansion> values = [
+    base,
+    chainsThatRust,
+    shadowOfNerekhall,
+  ];
+}
 
 class Trait {
   final String name;
