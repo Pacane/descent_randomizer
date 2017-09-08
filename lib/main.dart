@@ -6,15 +6,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Descent Open Group Randomizer',
+      title: 'Descent Randomizer',
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new MyHomePage(title: 'Descent Open Group Randomizer'),
+      home: new MyHomePage(title: 'Descent Randomizer'),
     );
   }
 }
@@ -31,11 +30,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Trait> traits = Trait.values;
   final List<Expansion> expansions = Expansion.values;
+  static const int defaultNumberOfGroups = 2;
 
   final Map<Trait, bool> traitFilters = {};
   final Map<Expansion, bool> expansionFilters = {};
 
-  int numberOfGroups = 2;
+  int numberOfGroups = defaultNumberOfGroups;
   List<Monster> foundMonsters = [];
 
   @override
