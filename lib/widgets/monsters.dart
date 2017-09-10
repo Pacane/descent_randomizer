@@ -11,10 +11,10 @@ class MonstersPage extends StatefulWidget {
 class MonstersPageState extends State<MonstersPage> {
   final List<Trait> traits = Trait.values;
   final List<Expansion> expansions = Expansion.values;
-  static const int defaultNumberOfGroups = 2;
-
   final Map<Trait, bool> traitFilters = {};
   final Map<Expansion, bool> expansionFilters = {};
+
+  static const int defaultNumberOfGroups = 2;
 
   int numberOfGroups = defaultNumberOfGroups;
   List<Monster> foundMonsters = [];
