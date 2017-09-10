@@ -2,6 +2,8 @@ name: descent_randomizer
 description: A descent monster randomizer.
 
 dependencies:
+  redux: ">=2.0.0 <3.0.0"
+  flutter_redux: ">=0.3.0 <0.4.0"
   flutter:
     sdk: flutter
 
@@ -32,6 +34,9 @@ flutter:
     - lib/assets/mountain.png
     - lib/assets/water.png
     - lib/assets/wilderness.png
+    - lib/assets/plot_deck.png
+    - lib/assets/overlord_deck.png
+    - lib/assets/monster_cards.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
