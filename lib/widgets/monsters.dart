@@ -46,28 +46,21 @@ class MonstersPage extends StatelessWidget {
                     ),
                   ),
                 )
-                ..addAll(
-                  Trait.values.map<Widget>(
-                    (Trait t) =>
-                        new StoreConnector<AppState, Tuple<Trait, bool>>(
-                          converter: (store) {
-                            var tuple = new Tuple(
-                                t, store.state.traitsFilters[t] == true);
-                            return tuple;
-                          },
-                          builder: (context, t) {
-                            return new TraitCheckbox(
-                              t.f,
-                              t.s,
-                              onChanged: (bool v) {
-                                store.dispatch({
-                                  'type': 'updateTrait',
-                                  'trait': t.f,
-                                  'value': v
-                                });
-                              },
-                            );
-                          },
+                ..add(
+                  new StoreConnector<AppState, List<Tuple<Trait, bool>>>(
+                    converter: (store) => store.state.traitsFilters.keys
+                        .map((Trait t) =>
+                            new Tuple(t, store.state.traitsFilters[t]))
+                        .toList(),
+                    builder: (context, traits) => new Column(
+                          children: traits
+                              .map((Tuple<Trait, bool> tu) => new TraitCheckbox(
+                                    tu.f,
+                                    tu.s,
+                                    onChanged: (bool v) => store.dispatch(
+                                        new UpdateTraitFilterAction(tu.f, v)),
+                                  ))
+                              .toList(),
                         ),
                   ),
                 )
@@ -77,9 +70,14 @@ class MonstersPage extends StatelessWidget {
                     child: const Text('Randomize'),
                   ),
                 )
-                ..addAll(
-                  store.state.foundMonsters.map(
-                    (Monster m) => new MonsterWidget(m.name),
+                ..add(
+                  new StoreConnector<AppState, List<Monster>>(
+                    converter: (store) => store.state.foundMonsters,
+                    builder: (context, monsters) => new Column(
+                          children: monsters
+                              .map((Monster m) => new MonsterWidget(m.name))
+                              .toList(),
+                        ),
                   ),
                 ),
             ),
@@ -116,6 +114,7 @@ class MonsterWidget extends ListTile {
 class Tuple<T1, T2> {
   final T1 f;
   final T2 s;
+
   Tuple(this.f, this.s);
 }
 

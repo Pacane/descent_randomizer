@@ -43,30 +43,13 @@ AppState filtersReducer(AppState state, dynamic action) {
     state = state.clone();
     state.traitsFilters[action.trait] = action.value;
   } else if (action is ChangeNumberOfGroupsAction) {
-//    state = state.clone();
-//    state.numberOfGroups = action.number;
-  } else if (action['type'] == 'updateTrait') {
     state = state.clone();
-    var trait = action['trait'];
-    var newValue = action['value'];
-
-    var building = state.traitsFilters.keys.firstWhere((Trait t) => t.name == "Building");
-
-    print(building.name);
-    print(building.assetPath);
-    print(building.runtimeType);
-    print(building.hashCode);
-
-    print('****');
-
-    print(trait.name);
-    print(trait.assetPath);
-    print(trait.runtimeType);
-    print(trait.hashCode);
-
-    print('is equal? : ' + (trait == building ? 'equals' : 'not equals'));
-    print(state.traitsFilters.containsKey(trait));
-    print(state.traitsFilters.containsKey(building));
+    state.numberOfGroups = action.number;
+  } else if (action is DrawMonsterGroups) {
+    state = state.clone();
+    state.foundMonsters = randomizeMonsterBy(state.numberOfGroups,
+        traits: state.traitsFilters.keys
+            .where((Trait t) => state.traitsFilters[t] == true).toList());
   }
 
   return state;

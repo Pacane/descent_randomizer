@@ -1,8 +1,8 @@
-import 'package:descent_randomizer/app_state.dart';
 import 'package:flutter/material.dart';
 import 'widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'app_state/app_state.dart';
 
 void main() {
   runApp(new App());
