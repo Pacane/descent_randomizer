@@ -92,10 +92,11 @@ class TraitCheckbox extends ListTile {
   TraitCheckbox(Trait t, bool value, {ValueChanged<bool> onChanged})
       : trait = t,
         super(
-            key: new ObjectKey(t),
-            trailing: new Checkbox(value: value, onChanged: onChanged),
-            leading: new Image.asset(t.assetPath),
-            title: new Text(t.name));
+          key: new ObjectKey(t),
+          trailing: new Checkbox(value: value, onChanged: onChanged),
+          leading: new Image.asset(t.assetPath),
+          title: new Text(t.name),
+        );
 }
 
 class MonsterWidget extends ListTile {
@@ -129,11 +130,14 @@ class ExpansionSelector extends StatelessWidget {
       store: store,
       child: new ListView(
         children: <Widget>[]
-          ..add(new DrawerHeader(
+          ..add(
+            new DrawerHeader(
               child: const Text(
-            'Select your expansions',
-            style: const TextStyle(fontSize: 32.0),
-          )))
+                'Select your expansions',
+                style: const TextStyle(fontSize: 32.0),
+              ),
+            ),
+          )
           ..add(
             new StoreConnector<AppState, Iterable<Tuple<Expansion, bool>>>(
                 builder: (context, expansions) => new Column(
