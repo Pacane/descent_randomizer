@@ -17,7 +17,7 @@ class MonstersPage extends StatelessWidget {
           appBar: new AppBar(
             title: new Text('Random open groups'),
           ),
-          drawer: new Drawer(child: new ExpansionSelector()),
+          drawer: new Drawer(child: new ExpansionSelector(store)),
           body: new Center(
             child: new ListView(
               padding: new EdgeInsets.all(8.0),
@@ -118,35 +118,42 @@ class Tuple<T1, T2> {
   Tuple(this.f, this.s);
 }
 
-class ExpansionSelector extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new ExpansionSelectorState();
-  }
-}
+class ExpansionSelector extends StatelessWidget {
+  final Store<AppState> store;
 
-class ExpansionSelectorState extends State<ExpansionSelector> {
-  final List<Expansion> expansions = Expansion.values;
-  final Map<Expansion, bool> expansionFilters = {};
+  ExpansionSelector(this.store);
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(
-      children: <Widget>[]
-        ..add(new DrawerHeader(
-            child: const Text(
-          'Select your expansions',
-          style: const TextStyle(fontSize: 32.0),
-        )))
-        ..addAll(expansions.map(
-          (Expansion e) => new CheckboxListTile(
-                value: expansionFilters[e] == true,
-                title: new Text(e.name),
-                onChanged: (bool v) => setState(() {
-                      expansionFilters[e] = v;
-                    }),
-              ),
-        )),
+    return new StoreProvider(
+      store: store,
+      child: new ListView(
+        children: <Widget>[]
+          ..add(new DrawerHeader(
+              child: const Text(
+            'Select your expansions',
+            style: const TextStyle(fontSize: 32.0),
+          )))
+          ..add(
+            new StoreConnector<AppState, Iterable<Tuple<Expansion, bool>>>(
+                builder: (context, expansions) => new Column(
+                      children: expansions
+                          .map((Tuple<Expansion, bool> t) =>
+                              new CheckboxListTile(
+                                value: t.s,
+                                title: new Text(t.f.name),
+                                onChanged: (bool v) => store.dispatch(
+                                    new UpdateExpansionFilterAction(t.f, v)),
+                              ))
+                          .toList(),
+                    ),
+                converter: (store) {
+                  var expansions = store.state.expansionsFilters;
+                  return expansions.keys
+                      .map((Expansion e) => new Tuple(e, expansions[e]));
+                }),
+          ),
+      ),
     );
   }
 }

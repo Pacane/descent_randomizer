@@ -4,23 +4,38 @@ class AppState {
   Map<Trait, bool> traitsFilters;
   int numberOfGroups;
   List<Monster> foundMonsters;
+  Map<Expansion, bool> expansionsFilters;
 
   AppState clone() {
-    var newState = new AppState._(new Map.from(traitsFilters), numberOfGroups,
-        new List.from(foundMonsters));
+    var newState = new AppState._(
+      new Map.from(traitsFilters),
+      numberOfGroups,
+      new List.from(foundMonsters),
+      new Map.from(expansionsFilters),
+    );
     return newState;
   }
 
   AppState.initial()
       : numberOfGroups = 2,
         traitsFilters = {},
-        foundMonsters = [] {
+        foundMonsters = [],
+        expansionsFilters = {} {
     for (var trait in Trait.values) {
       traitsFilters[trait] = false;
     }
+
+    for (var expansion in Expansion.values) {
+      if (expansion == Expansion.base) {
+        expansionsFilters[expansion] = true;
+      } else {
+        expansionsFilters[expansion] = false;
+      }
+    }
   }
 
-  AppState._(this.traitsFilters, this.numberOfGroups, this.foundMonsters);
+  AppState._(this.traitsFilters, this.numberOfGroups, this.foundMonsters,
+      this.expansionsFilters);
 }
 
 class UpdateTraitFilterAction {
@@ -28,6 +43,13 @@ class UpdateTraitFilterAction {
   final bool value;
 
   UpdateTraitFilterAction(this.trait, this.value);
+}
+
+class UpdateExpansionFilterAction {
+  final Expansion expansion;
+  final bool value;
+
+  UpdateExpansionFilterAction(this.expansion, this.value);
 }
 
 class ChangeNumberOfGroupsAction {
@@ -49,7 +71,11 @@ AppState filtersReducer(AppState state, dynamic action) {
     state = state.clone();
     state.foundMonsters = randomizeMonsterBy(state.numberOfGroups,
         traits: state.traitsFilters.keys
-            .where((Trait t) => state.traitsFilters[t] == true).toList());
+            .where((Trait t) => state.traitsFilters[t] == true)
+            .toList());
+  } else if (action is UpdateExpansionFilterAction) {
+    state = state.clone();
+    state.expansionsFilters[action.expansion] = action.value;
   }
 
   return state;
