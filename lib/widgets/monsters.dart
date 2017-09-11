@@ -20,67 +20,73 @@ class MonstersPage extends StatelessWidget {
           drawer: new Drawer(child: new ExpansionSelector(store)),
           body: new Center(
             child: new ListView(
-              padding: new EdgeInsets.all(8.0),
-              children: <Widget>[]
-                ..add(
-                  new ListTile(
-                    leading: const CircleAvatar(
-                      child: const Text('#'),
-                    ),
-                    trailing: new StoreConnector<AppState, int>(
+                padding: new EdgeInsets.all(8.0),
+                children: <Widget>[]
+                  ..add(
+                    new ListTile(
+                      leading: const CircleAvatar(
+                        child: const Text('#'),
+                      ),
+                      trailing: new StoreConnector<AppState, int>(
+                          converter: (store) => store.state.numberOfGroups,
+                          builder: (context, nbOfMonsters) => new Text(
+                                nbOfMonsters.toString(),
+                                style: const TextStyle(fontSize: 20.0),
+                              )),
+                      title: new StoreConnector<AppState, int>(
                         converter: (store) => store.state.numberOfGroups,
-                        builder: (context, nbOfMonsters) => new Text(
-                              nbOfMonsters.toString(),
-                              style: const TextStyle(fontSize: 20.0),
-                            )),
-                    title: new StoreConnector<AppState, int>(
-                      converter: (store) => store.state.numberOfGroups,
-                      builder: (context, numberOfGroups) => new Slider(
-                            value: numberOfGroups.toDouble(),
-                            max: 5.0,
-                            min: 1.0,
-                            onChanged: (double n) => store.dispatch(
-                                  new ChangeNumberOfGroupsAction(n.round()),
-                                ),
+                        builder: (context, numberOfGroups) => new Slider(
+                              value: numberOfGroups.toDouble(),
+                              max: 5.0,
+                              min: 1.0,
+                              onChanged: (double n) => store.dispatch(
+                                    new ChangeNumberOfGroupsAction(n.round()),
+                                  ),
+                            ),
+                      ),
+                    ),
+                  )
+                  ..add(
+                    new StoreConnector<AppState, List<Tuple<Trait, bool>>>(
+                      converter: (store) => store.state.traitsFilters.keys
+                          .map((Trait t) =>
+                              new Tuple(t, store.state.traitsFilters[t]))
+                          .toList(),
+                      builder: (context, traits) => new Column(
+                            children: traits
+                                .map((Tuple<Trait, bool> tu) =>
+                                    new TraitCheckbox(
+                                      tu.f,
+                                      tu.s,
+                                      onChanged: (bool v) => store.dispatch(
+                                          new UpdateTraitFilterAction(tu.f, v)),
+                                    ))
+                                .toList(),
                           ),
                     ),
-                  ),
-                )
-                ..add(
-                  new StoreConnector<AppState, List<Tuple<Trait, bool>>>(
-                    converter: (store) => store.state.traitsFilters.keys
-                        .map((Trait t) =>
-                            new Tuple(t, store.state.traitsFilters[t]))
-                        .toList(),
-                    builder: (context, traits) => new Column(
-                          children: traits
-                              .map((Tuple<Trait, bool> tu) => new TraitCheckbox(
-                                    tu.f,
-                                    tu.s,
-                                    onChanged: (bool v) => store.dispatch(
-                                        new UpdateTraitFilterAction(tu.f, v)),
-                                  ))
-                              .toList(),
-                        ),
-                  ),
-                )
-                ..add(
-                  new RaisedButton(
-                    onPressed: () => store.dispatch(new DrawMonsterGroups()),
-                    child: const Text('Randomize'),
-                  ),
-                )
-                ..add(
-                  new StoreConnector<AppState, List<Monster>>(
-                    converter: (store) => store.state.foundMonsters,
-                    builder: (context, monsters) => new Column(
-                          children: monsters
-                              .map((Monster m) => new MonsterWidget(m.name))
-                              .toList(),
-                        ),
-                  ),
-                ),
-            ),
+                  )
+                  ..add(
+                    new RaisedButton(
+                      onPressed: () {
+                        store.dispatch(new DrawMonsterGroups());
+                        showDialog(
+                            context: context,
+                            child: new SimpleDialog(
+                                title: const Text('Hello'),
+                                children: [
+                                  new SimpleDialogOption(
+                                    child: const Text('OK'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  new SimpleDialogOption(
+                                    child: const Text('OK'),
+                                    onPressed: () => Navigator.pop(context),
+                                  )
+                                ]));
+                      },
+                      child: const Text('Randomize'),
+                    ),
+                  )),
           ),
         ));
   }
