@@ -1,120 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import '../randomizer.dart';
+import '../app_state.dart';
 
-class MonstersPage extends StatefulWidget {
-  MonstersPage({Key key}) : super(key: key);
+class MonstersPage extends StatelessWidget {
+  MonstersPage(this.store, {Key key}) : super(key: key);
 
-  @override
-  MonstersPageState createState() => new MonstersPageState();
-}
-
-class MonstersPageState extends State<MonstersPage> {
-  final List<Trait> traits = Trait.values;
-  final List<Expansion> expansions = Expansion.values;
-  final Map<Trait, bool> traitFilters = {};
-  final Map<Expansion, bool> expansionFilters = {};
-
-  static const int defaultNumberOfGroups = 2;
-
-  int numberOfGroups = defaultNumberOfGroups;
-  List<Monster> foundMonsters = [];
-
-  @override
-  void initState() {
-    super.initState();
-    traits.forEach((Trait t) {
-      traitFilters[t] = false;
-    });
-
-    expansions.forEach((Expansion e) {
-      expansionFilters[e] = false;
-    });
-
-    expansionFilters[Expansion.base] = true;
-  }
+  final Store<AppState> store;
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Random open groups'),
-      ),
-      drawer: new Drawer(
-        child: new ListView(
-          children: <Widget>[]
-            ..add(new DrawerHeader(
-                child: const Text(
-              'Select your expansions',
-              style: const TextStyle(fontSize: 32.0),
-            )))
-            ..addAll(expansions.map(
-              (Expansion e) => new CheckboxListTile(
-                    value: expansionFilters[e] == true,
-                    title: new Text(e.name),
-                    onChanged: (bool v) => setState(() {
-                          expansionFilters[e] = v;
-                        }),
+    return new StoreProvider(
+        store: store,
+        child: new Scaffold(
+          appBar: new AppBar(
+            title: new Text('Random open groups'),
+          ),
+          drawer: new Drawer(child: new ExpansionSelector()),
+          body: new Center(
+            child: new ListView(
+              padding: new EdgeInsets.all(8.0),
+              children: <Widget>[]
+                ..add(
+                  new ListTile(
+                    leading: const CircleAvatar(
+                      child: const Text('#'),
+                    ),
+                    trailing: new StoreConnector<AppState, int>(
+                        converter: (store) => store.state.numberOfGroups,
+                        builder: (context, nbOfMonsters) => new Text(
+                              nbOfMonsters.toString(),
+                              style: const TextStyle(fontSize: 20.0),
+                            )),
+                    title: new StoreConnector<AppState, int>(
+                      converter: (store) => store.state.numberOfGroups,
+                      builder: (context, numberOfGroups) => new Slider(
+                            value: numberOfGroups.toDouble(),
+                            max: 5.0,
+                            min: 1.0,
+                            onChanged: (double n) => store.dispatch(
+                                  new ChangeNumberOfGroupsAction(n.round()),
+                                ),
+                          ),
+                    ),
                   ),
-            )),
-        ),
-      ),
-      body: new Center(
-        child: new ListView(
-          padding: new EdgeInsets.all(8.0),
-          children: <Widget>[]
-            ..add(new ListTile(
-                leading: const CircleAvatar(
-                  child: const Text('#'),
+                )
+                ..addAll(
+                  Trait.values.map<Widget>(
+                    (Trait t) =>
+                        new StoreConnector<AppState, Tuple<Trait, bool>>(
+                          converter: (store) {
+                            var tuple = new Tuple(
+                                t, store.state.traitsFilters[t] == true);
+                            return tuple;
+                          },
+                          builder: (context, t) {
+                            return new TraitCheckbox(
+                              t.f,
+                              t.s,
+                              onChanged: (bool v) {
+                                store.dispatch({
+                                  'type': 'updateTrait',
+                                  'trait': t.f,
+                                  'value': v
+                                });
+                              },
+                            );
+                          },
+                        ),
+                  ),
+                )
+                ..add(
+                  new RaisedButton(
+                    onPressed: () => store.dispatch(new DrawMonsterGroups()),
+                    child: const Text('Randomize'),
+                  ),
+                )
+                ..addAll(
+                  store.state.foundMonsters.map(
+                    (Monster m) => new MonsterWidget(m.name),
+                  ),
                 ),
-                trailing: new Text(
-                  numberOfGroups.toString(),
-                  style: const TextStyle(fontSize: 20.0),
-                ),
-                title: new Slider(
-                  value: numberOfGroups.toDouble(),
-                  max: 5.0,
-                  min: 1.0,
-                  onChanged: (double n) =>
-                      setState(() => numberOfGroups = n.round()),
-                )))
-            ..addAll(traits.map<Widget>((Trait t) => new TraitCheckbox(
-                  t,
-                  traitFilters,
-                  onChanged: (bool v) => setState(() {
-                        traitFilters[t] = v;
-                      }),
-                )))
-            ..add(
-              new RaisedButton(
-                onPressed: () => setState(() {
-                      var activeTraitFilters = traits
-                          .where((Trait t) => traitFilters[t] == true)
-                          .toList();
-                      foundMonsters = randomizeMonsterBy(numberOfGroups,
-                          traits: activeTraitFilters);
-                      print('Found monsters = $foundMonsters');
-                    }),
-                child: const Text('Randomize'),
-              ),
-            )
-            ..addAll(
-                foundMonsters.map((Monster m) => new MonsterWidget(m.name))),
-        ),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 }
 
 class TraitCheckbox extends ListTile {
   final Trait trait;
 
-  TraitCheckbox(Trait t, Map<Trait, bool> traitFilters,
-      {ValueChanged<bool> onChanged})
+  TraitCheckbox(Trait t, bool value, {ValueChanged<bool> onChanged})
       : trait = t,
         super(
             key: new ObjectKey(t),
-            trailing: new Checkbox(
-                value: traitFilters[t] == true, onChanged: onChanged),
+            trailing: new Checkbox(value: value, onChanged: onChanged),
             leading: new Image.asset(t.assetPath),
             title: new Text(t.name));
 }
@@ -130,4 +111,43 @@ class MonsterWidget extends ListTile {
             style: new TextStyle(color: Colors.red),
           ),
         );
+}
+
+class Tuple<T1, T2> {
+  final T1 f;
+  final T2 s;
+  Tuple(this.f, this.s);
+}
+
+class ExpansionSelector extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new ExpansionSelectorState();
+  }
+}
+
+class ExpansionSelectorState extends State<ExpansionSelector> {
+  final List<Expansion> expansions = Expansion.values;
+  final Map<Expansion, bool> expansionFilters = {};
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView(
+      children: <Widget>[]
+        ..add(new DrawerHeader(
+            child: const Text(
+          'Select your expansions',
+          style: const TextStyle(fontSize: 32.0),
+        )))
+        ..addAll(expansions.map(
+          (Expansion e) => new CheckboxListTile(
+                value: expansionFilters[e] == true,
+                title: new Text(e.name),
+                onChanged: (bool v) => setState(() {
+                      expansionFilters[e] = v;
+                    }),
+              ),
+        )),
+    );
+  }
 }

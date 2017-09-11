@@ -47,5 +47,15 @@ main() {
 
       expect(actual, hasLength(expectedSize));
     });
+
+    test('Equals', () {
+      var t1 = Trait.building;
+      dynamic t2 = Trait.values[0];
+
+      var m = {t1: false};
+
+      expect(m.containsKey(t2), isTrue);
+    });
+
   });
 }

@@ -218,6 +218,13 @@ class Trait {
   ];
 
   String get assetPath => 'lib/assets/${name.toLowerCase()}.png';
+
+  @override
+  bool operator ==(Object other) =>
+      other is Trait && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 enum Size {
