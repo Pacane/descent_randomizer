@@ -72,16 +72,21 @@ class MonstersPage extends StatelessWidget {
                         showDialog(
                             context: context,
                             child: new SimpleDialog(
-                                title: const Text('Hello'),
+                                title: const Text('Drawn monster groups'),
                                 children: [
-                                  new SimpleDialogOption(
-                                    child: const Text('OK'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  new SimpleDialogOption(
-                                    child: const Text('OK'),
-                                    onPressed: () => Navigator.pop(context),
-                                  )
+                                  new StoreConnector<AppState, List<Monster>>(
+                                      builder: (context, monsters) =>
+                                          new Column(
+                                            children: monsters
+                                                .map((Monster m) =>
+                                                    new MonsterWidget(m.name))
+                                                .toList(),
+                                          ),
+                                      converter: (store) =>
+                                          store.state.foundMonsters),
+                                  new FlatButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('OK')),
                                 ]));
                       },
                       child: const Text('Randomize'),
