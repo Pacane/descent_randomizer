@@ -14,7 +14,7 @@ All the expansions are planned to be supported, currently only the base set, Cha
 ## FAQ
 
 ### Why isn't the app on the store?
-It was rejected due to use of copyrighted content. I may try to go around this by at some point, but I'm not really good in design, so if someone wants to help, I'll be glad to try to publish again.
+It was rejected due to use of copyrighted content. I may try to go around this at some point, but I'm not really good in design, so if someone wants to help, I'll be glad to try to publish again.
 
 ### Will you support the expansion X?
 Most likely, yes. If you really want an expansion to be added to the app, just open an issue and I'll implement that one next.
