@@ -1,24 +1,40 @@
 import 'dart:math';
 
 List<Monster> allMonsters = [
-  new Monster.fleshMoulder(),
-  new Monster.zombie(),
-  new Monster.caveSpider(),
-  new Monster.barghest(),
-  new Monster.elemental(),
-  new Monster.ettin(),
-  new Monster.goblinArcher(),
-  new Monster.merriod(),
-  new Monster.shadowDragon(),
+  Monster.fleshMoulder,
+  Monster.zombie,
+  Monster.caveSpider,
+  Monster.barghest,
+  Monster.elemental,
+  Monster.ettin,
+  Monster.goblinArcher,
+  Monster.merriod,
+  Monster.shadowDragon,
+  Monster.changeling,
+  Monster.ironbound,
+  Monster.infernaelHulk,
+  Monster.ratSwarm,
 ];
 
-List<Monster> filterMonstersBy({List<Trait> traits}) {
-  return allMonsters
-      .where((Monster m) => m.traits.any((Trait t) => traits.contains(t)))
-      .toList();
+List<Monster> filterMonstersBy(
+    {List<Trait> traits = const [], List<Expansion> expansions = const []}) {
+  Iterable<Monster> filtered = allMonsters;
+
+  if (expansions.isNotEmpty) {
+    filtered =
+        allMonsters.where((Monster m) => expansions.contains(m.expansion));
+  }
+
+  if (traits.isNotEmpty) {
+    filtered = filtered
+        .where((Monster m) => m.traits.any((Trait t) => traits.contains(t)));
+  }
+
+  return filtered.toList();
 }
 
-List<Monster> randomizeMonsterBy(int count, {List<Trait> traits}) {
+List<Monster> randomizeMonsterBy(int count,
+    {List<Trait> traits = const [], List<Expansion> expansions = const []}) {
   var filteredMonsters = filterMonstersBy(traits: traits);
   var rng = new Random();
   var result = <Monster>[];
@@ -47,120 +63,114 @@ class Monster {
   final Attack attack;
   final Size size;
 
-  Monster._(this.name, this.attack, this.traits, this.expansion, this.size);
+  const Monster._(
+      this.name, this.attack, this.traits, this.expansion, this.size);
 
-  factory Monster.fleshMoulder() => new Monster._(
-        "Flesh Moulder",
-        Attack.ranged,
-        new Set.from([Trait.cursed, Trait.civilized]),
-        Expansion.base,
-        Size.small,
-      );
+  static Monster fleshMoulder = new Monster._(
+    "Flesh Moulder",
+    Attack.ranged,
+    new Set.from([Trait.cursed, Trait.civilized]),
+    Expansion.base,
+    Size.small,
+  );
 
-  factory Monster.goblinArcher() => new Monster._(
-      "Goblin Archer",
-      Attack.ranged,
-      new Set.from([Trait.building, Trait.cave]),
-      Expansion.base,
-      Size.small);
+  static Monster goblinArcher = new Monster._("Goblin Archer", Attack.ranged,
+      new Set.from([Trait.building, Trait.cave]), Expansion.base, Size.small);
 
-  factory Monster.ettin() => new Monster._(
-        "Ettin",
-        Attack.melee,
-        new Set.from([Trait.mountain, Trait.cave]),
-        Expansion.base,
-        Size.huge,
-      );
+  static Monster ettin = new Monster._(
+    "Ettin",
+    Attack.melee,
+    new Set.from([Trait.mountain, Trait.cave]),
+    Expansion.base,
+    Size.huge,
+  );
 
-  factory Monster.elemental() => new Monster._(
-        "Elemental",
-        Attack.ranged,
-        new Set.from([Trait.cold, Trait.hot]),
-        Expansion.base,
-        Size.huge,
-      );
+  static Monster elemental = new Monster._(
+    "Elemental",
+    Attack.ranged,
+    new Set.from([Trait.cold, Trait.hot]),
+    Expansion.base,
+    Size.huge,
+  );
 
-  factory Monster.barghest() => new Monster._(
-        "Barghest",
-        Attack.melee,
-        new Set.from([Trait.wilderness, Trait.dark]),
-        Expansion.base,
-        Size.medium,
-      );
+  static Monster barghest = new Monster._(
+    "Barghest",
+    Attack.melee,
+    new Set.from([Trait.wilderness, Trait.dark]),
+    Expansion.base,
+    Size.medium,
+  );
 
-  factory Monster.caveSpider() => new Monster._(
-        "Cave Spider",
-        Attack.melee,
-        new Set.from([Trait.wilderness, Trait.cave]),
-        Expansion.base,
-        Size.small,
-      );
+  static Monster caveSpider = new Monster._(
+    "Cave Spider",
+    Attack.melee,
+    new Set.from([Trait.wilderness, Trait.cave]),
+    Expansion.base,
+    Size.small,
+  );
 
-  factory Monster.merriod() => new Monster._(
-        "Merriod",
-        Attack.melee,
-        new Set.from([Trait.wilderness, Trait.water]),
-        Expansion.base,
-        Size.huge,
-      );
+  static Monster merriod = new Monster._(
+    "Merriod",
+    Attack.melee,
+    new Set.from([Trait.wilderness, Trait.water]),
+    Expansion.base,
+    Size.huge,
+  );
 
-  factory Monster.shadowDragon() => new Monster._(
-        "Shadow Dragon",
-        Attack.melee,
-        new Set.from([Trait.dark, Trait.cave]),
-        Expansion.base,
-        Size.massive,
-      );
+  static Monster shadowDragon = new Monster._(
+    "Shadow Dragon",
+    Attack.melee,
+    new Set.from([Trait.dark, Trait.cave]),
+    Expansion.base,
+    Size.massive,
+  );
 
-  factory Monster.zombie() => new Monster._(
-        "Zombie",
-        Attack.melee,
-        new Set.from([Trait.cursed, Trait.building]),
-        Expansion.base,
-        Size.small,
-      );
+  static Monster zombie = new Monster._(
+    "Zombie",
+    Attack.melee,
+    new Set.from([Trait.cursed, Trait.building]),
+    Expansion.base,
+    Size.small,
+  );
 
-  factory Monster.changeling() => new Monster._(
-        "Changeling",
-        Attack.melee,
-        new Set.from([Trait.cursed, Trait.civilized]),
-        Expansion.shadowOfNerekhall,
-        Size.small,
-      );
+  static Monster changeling = new Monster._(
+    "Changeling",
+    Attack.melee,
+    new Set.from([Trait.cursed, Trait.civilized]),
+    Expansion.shadowOfNerekhall,
+    Size.small,
+  );
 
-  factory Monster.ratSwarm() => new Monster._(
-        "Rat swarm",
-        Attack.melee,
-        new Set.from([Trait.building, Trait.dark]),
-        Expansion.shadowOfNerekhall,
-        Size.medium,
-      );
+  static Monster ratSwarm = new Monster._(
+    "Rat swarm",
+    Attack.melee,
+    new Set.from([Trait.building, Trait.dark]),
+    Expansion.shadowOfNerekhall,
+    Size.medium,
+  );
 
-  factory Monster.ironbound() => new Monster._(
-        "Ironbound",
-        Attack.melee,
-        new Set.from([Trait.building, Trait.civilized]),
-        Expansion.shadowOfNerekhall,
-        Size.small,
-      );
+  static Monster ironbound = new Monster._(
+    "Ironbound",
+    Attack.melee,
+    new Set.from([Trait.building, Trait.civilized]),
+    Expansion.shadowOfNerekhall,
+    Size.small,
+  );
 
-  factory Monster.infernaelHulk() => new Monster._(
-        "Infernael Hulk",
-        Attack.melee,
-        new Set.from([Trait.cursed, Trait.hot]),
-        Expansion.shadowOfNerekhall,
-        Size.huge,
-      );
+  static Monster infernaelHulk = new Monster._(
+    "Infernael Hulk",
+    Attack.melee,
+    new Set.from([Trait.cursed, Trait.hot]),
+    Expansion.shadowOfNerekhall,
+    Size.huge,
+  );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Monster &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          expansion == other.expansion &&
-          traits.containsAll(other.traits) &&
-          attack == other.attack;
+  bool operator ==(covariant Monster other) =>
+      name == other.name &&
+      expansion == other.expansion &&
+      traits.containsAll(other.traits) &&
+      attack == other.attack;
 
   @override
   String toString() => '$name';
@@ -186,6 +196,12 @@ class Expansion {
     chainsThatRust,
     shadowOfNerekhall,
   ];
+
+  @override
+  bool operator ==(covariant Expansion other) => name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class Trait {

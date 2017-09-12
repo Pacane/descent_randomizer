@@ -15,11 +15,11 @@ class MainMenu extends StatelessWidget {
               'lib/assets/monster_cards.png',
               route: '/randomize-monsters'),
           new MenuCard(
-              'Overlord decks',
+              '(Coming soon) Overlord decks',
               'Pick an overlord deck when playing an encounter or a campaign.',
               'lib/assets/overlord_deck.png'),
           new MenuCard(
-              'Plot decks',
+              '(Coming soon) Plot decks',
               'Pick plot decks taking into account the lieutenant packs you own.',
               'lib/assets/plot_deck.png'),
         ],
