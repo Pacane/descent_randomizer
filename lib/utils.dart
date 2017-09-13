@@ -4,3 +4,6 @@ class Tuple<T1, T2> {
 
   Tuple(this.f, this.s);
 }
+
+List<T> getAllEnabled<T>(Map<T, bool> filters) =>
+    filters.keys.where((T t) => filters[t] == true).toList();

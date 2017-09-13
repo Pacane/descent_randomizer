@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/randomizer.dart';
+import 'package:descent_randomizer/descent.dart';
+import 'package:descent_randomizer/randomizer.dart';
 
 main() {
   group('Base expansion only', () {
@@ -44,6 +45,21 @@ main() {
       var expected = [Monster.changeling, Monster.ironbound];
 
       var actual = filterMonstersBy(traits: traits, expansions: expansions);
+
+      expect(actual, unorderedEquals(expected));
+    });
+
+    test('Randomize by trait and expansion', () {
+      var traits = [Trait.civilized, Trait.building];
+      var expansions = [Expansion.base];
+      var expected = [
+        Monster.zombie,
+        Monster.fleshMoulder,
+        Monster.goblinArcher
+      ];
+
+      var actual =
+          randomizeMonsterBy(100, traits: traits, expansions: expansions);
 
       expect(actual, unorderedEquals(expected));
     });

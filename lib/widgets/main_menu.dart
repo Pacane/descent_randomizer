@@ -10,9 +10,11 @@ class MainMenu extends StatelessWidget {
       body: new ListView(
         children: <Widget>[
           new MenuCard(
-              'Collection',
-              'Select the expansions and lieutenants you own.',
-              'lib/assets/collection.png'),
+            'Collection',
+            'Select the expansions and lieutenants you own.',
+            'lib/assets/collection.png',
+            route: '/edit-collection',
+          ),
           new MenuCard(
               'Open groups',
               'Pick open groups taking into account the expansions you own.',

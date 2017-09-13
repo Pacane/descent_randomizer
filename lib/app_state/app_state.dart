@@ -1,4 +1,6 @@
 import '../randomizer.dart';
+import '../descent.dart';
+import '../utils.dart';
 
 class AppState {
   Map<Trait, bool> traitsFilters;
@@ -70,12 +72,12 @@ AppState filtersReducer(AppState state, dynamic action) {
   } else if (action is DrawMonsterGroups) {
     state = state.clone();
     state.foundMonsters = randomizeMonsterBy(state.numberOfGroups,
-        traits: state.traitsFilters.keys
-            .where((Trait t) => state.traitsFilters[t] == true)
-            .toList());
+        traits: getAllEnabled(state.traitsFilters),
+        expansions: getAllEnabled(state.expansionsFilters));
   } else if (action is UpdateExpansionFilterAction) {
     state = state.clone();
     state.expansionsFilters[action.expansion] = action.value;
+    print('Expansion change');
   }
 
   return state;

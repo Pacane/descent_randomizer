@@ -14,6 +14,7 @@ class App extends StatelessWidget {
   final Map<String, WidgetBuilder> routes = {
     '/': (BuildContext c) => new MainMenu(),
     '/randomize-monsters': (BuildContext c) => new MonstersPage(store),
+    '/edit-collection': (BuildContext c) => new CollectionEditor(store),
   };
 
   @override

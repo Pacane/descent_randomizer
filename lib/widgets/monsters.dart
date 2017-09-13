@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import '../randomizer.dart';
 import '../app_state.dart';
 import '../utils.dart';
+import '../descent.dart';
 
 class MonstersPage extends StatelessWidget {
   MonstersPage(this.store, {Key key}) : super(key: key);
