@@ -7,7 +7,10 @@ class MainMenu extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Descent 2E Randomizer'),
       ),
-      body: new ListView(
+      body: new GridView.count(
+        padding: const EdgeInsets.all(8.0),
+        crossAxisCount: 1,
+        mainAxisSpacing: 4.0,
         children: <Widget>[
           new MenuCard(
             'Collection',
@@ -50,18 +53,33 @@ class MenuCard extends StatelessWidget {
           Navigator.pushNamed(context, route);
         }
       },
-      child: new Card(
-        child: new Column(children: [
-          new Container(
-              padding: const EdgeInsets.all(8.0),
-              child: new Image.asset(photoUri)),
-          new ListTile(
-            leading: const Icon(Icons.play_arrow),
-            title: new Text(title),
-            subtitle: new Text(description),
-          ),
-        ]),
+      child: new GridTile(
+        child:
+        new Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: new BoxDecoration(color: Colors.black54),
+            child: new Image.asset(photoUri)),
+        footer: new GridTileBar(
+          backgroundColor: Colors.black54,
+          title: new _GridTitleText(title),
+          subtitle: new Text(description),
+        ),
       ),
+    );
+  }
+}
+
+class _GridTitleText extends StatelessWidget {
+  _GridTitleText(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return new FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: FractionalOffset.centerLeft,
+      child: new Text(text),
     );
   }
 }
