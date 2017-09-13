@@ -68,9 +68,9 @@ class ExpansionsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return new GridView.count(
       primary: false,
-      padding: const EdgeInsets.all(12.0),
-      crossAxisSpacing: 8.0,
-      mainAxisSpacing: 12.0,
+      padding: const EdgeInsets.all(8.0),
+      crossAxisSpacing: 4.0,
+      mainAxisSpacing: 4.0,
       crossAxisCount: 2,
       children: Expansion.values
           .map((Expansion e) => new ExpansionTile(store, e))
@@ -101,7 +101,13 @@ class ExpansionTile extends StatelessWidget {
                       expansionEnabled,
                     ),
                   ),
-                  child: new Image.asset(expansion.assetPath),
+                  child: new Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Image.asset(expansion.assetPath),
+                    decoration: new BoxDecoration(
+                      color: Colors.black54,
+                    ),
+                  ),
                 ),
               ),
           converter: (store) => store.state.expansionsFilters[expansion],
@@ -123,7 +129,7 @@ class _GridTitleText extends StatelessWidget {
       alignment: FractionalOffset.centerLeft,
       child: new Row(children: <Widget>[
         new Text(text),
-        new Checkbox(value: value, onChanged: null)
+        new Checkbox(value: value, onChanged: (_) {})
       ]),
     );
   }
