@@ -77,7 +77,6 @@ AppState filtersReducer(AppState state, dynamic action) {
   } else if (action is UpdateExpansionFilterAction) {
     state = state.clone();
     state.expansionsFilters[action.expansion] = action.value;
-    print('Expansion change');
   }
 
   return state;
