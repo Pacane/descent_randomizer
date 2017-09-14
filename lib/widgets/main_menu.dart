@@ -6,11 +6,8 @@ class MainMenu extends StatelessWidget {
     var orientation = MediaQuery.of(context).orientation;
     return new Scaffold(
       appBar: new AppBar(
-          title: const Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-            // TODO: Remove this when fix for title alignement is merged.
-        child: const Text('Descent 2E Randomizer'),
-      ),),
+        title: const Text('Descent 2E Randomizer'),
+      ),
       body: new GridView.count(
         padding: const EdgeInsets.all(8.0),
         crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
