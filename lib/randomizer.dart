@@ -3,11 +3,10 @@ import 'descent.dart';
 
 List<Monster> filterMonstersBy(
     {List<Trait> traits = const [], List<Expansion> expansions = const []}) {
-  Iterable<Monster> filtered = allMonsters;
+  Iterable<Monster> filtered = Monster.values;
 
   if (expansions.isNotEmpty) {
-    filtered =
-        allMonsters.where((Monster m) => expansions.contains(m.expansion));
+    filtered = filtered.where((Monster m) => expansions.contains(m.expansion));
   }
 
   if (traits.isNotEmpty) {

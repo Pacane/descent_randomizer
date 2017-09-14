@@ -1,19 +1,3 @@
-List<Monster> allMonsters = [
-  Monster.fleshMoulder,
-  Monster.zombie,
-  Monster.caveSpider,
-  Monster.barghest,
-  Monster.elemental,
-  Monster.ettin,
-  Monster.goblinArcher,
-  Monster.merriod,
-  Monster.shadowDragon,
-  Monster.changeling,
-  Monster.ironbound,
-  Monster.infernaelHulk,
-  Monster.ratSwarm,
-];
-
 class Monster {
   final String name;
   final Expansion expansion;
@@ -123,6 +107,22 @@ class Monster {
     Size.huge,
   );
 
+  static List<Monster> values = [
+    Monster.fleshMoulder,
+    Monster.zombie,
+    Monster.caveSpider,
+    Monster.barghest,
+    Monster.elemental,
+    Monster.ettin,
+    Monster.goblinArcher,
+    Monster.merriod,
+    Monster.shadowDragon,
+    Monster.changeling,
+    Monster.ironbound,
+    Monster.infernaelHulk,
+    Monster.ratSwarm,
+  ];
+
   @override
   bool operator ==(covariant Monster other) =>
       name == other.name &&
@@ -173,16 +173,16 @@ class Trait {
 
   const Trait._(this.name);
 
-  static const building = const Trait._('Building');
-  static const cave = const Trait._('Cave');
-  static const civilized = const Trait._('Civilized');
-  static const cold = const Trait._('Cold');
-  static const cursed = const Trait._('Cursed');
-  static const dark = const Trait._('Dark');
-  static const hot = const Trait._('Hot');
-  static const mountain = const Trait._('Mountain');
-  static const water = const Trait._('Water');
-  static const wilderness = const Trait._('Wilderness');
+  static const Trait building = const Trait._('Building');
+  static const Trait cave = const Trait._('Cave');
+  static const Trait civilized = const Trait._('Civilized');
+  static const Trait cold = const Trait._('Cold');
+  static const Trait cursed = const Trait._('Cursed');
+  static const Trait dark = const Trait._('Dark');
+  static const Trait hot = const Trait._('Hot');
+  static const Trait mountain = const Trait._('Mountain');
+  static const Trait water = const Trait._('Water');
+  static const Trait wilderness = const Trait._('Wilderness');
 
   static const List<Trait> values = const [
     building,
@@ -212,4 +212,26 @@ enum Size {
   medium, // monsters occupy two spaces (e.g., Barghests)
   huge, // monsters occupy four spaces (e.g., Ettins and Merriods)
   massive, // monsters occupy six spaces (e.g., Shadow Dragons)
+}
+
+class LieutenantPack {
+  final String name;
+  final String assetName;
+
+  const LieutenantPack._(this.name, this.assetName);
+
+  static const LieutenantPack splig =
+      const LieutenantPack._('Splig', 'splig.png');
+  static const LieutenantPack belthir =
+      const LieutenantPack._('Belthir', 'splig.png');
+  static const LieutenantPack zachareth =
+      const LieutenantPack._('Zachareth', 'splig.png');
+
+  static List<LieutenantPack> values = [
+    splig,
+    belthir,
+    zachareth,
+  ];
+
+  String get assetPath => 'lib/assets/lieutenants/$assetName';
 }

@@ -52,6 +52,7 @@ class CollectionEditorState extends State<CollectionEditor>
       body: new TabBarView(
         children: [
           new ExpansionsGrid(store),
+          new LieutenantsGrid(store),
         ],
         controller: _tabController,
       ),
@@ -77,6 +78,62 @@ class ExpansionsGrid extends StatelessWidget {
           .map((Expansion e) => new ExpansionTile(store, e))
           .toList(),
     );
+  }
+}
+
+class LieutenantsGrid extends StatelessWidget {
+  final Store<AppState> store;
+
+  LieutenantsGrid(this.store);
+
+  @override
+  Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
+    return new GridView.count(
+      primary: false,
+      padding: const EdgeInsets.all(8.0),
+      crossAxisSpacing: 4.0,
+      mainAxisSpacing: 4.0,
+      crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+      children: LieutenantPack.values
+          .map((LieutenantPack l) => new LieutenantTile(store, l))
+          .toList(),
+    );
+  }
+}
+
+class LieutenantTile extends StatelessWidget {
+  final Store<AppState> store;
+  final LieutenantPack lieutenant;
+
+  LieutenantTile(this.store, this.lieutenant);
+
+  @override
+  Widget build(BuildContext context) {
+    return new StoreProvider(
+        store: store,
+        child: new StoreConnector<AppState, bool>(
+          builder: (context, bool expansionEnabled) => new GestureDetector(
+                onTap: () => {},
+                child: new GridTile(
+                  footer: new GridTileBar(
+                    backgroundColor: Colors.black54,
+                    subtitle: new _GridTitleText(
+                      lieutenant.name,
+                      true,
+                    ),
+                  ),
+                  child: new Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Image.asset(lieutenant.assetPath),
+                    decoration: new BoxDecoration(
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ),
+          converter: (store) => store.state.expansionsFilters[lieutenant],
+        ));
   }
 }
 
