@@ -60,23 +60,25 @@ class ChangeNumberOfGroupsAction {
   ChangeNumberOfGroupsAction(this.number);
 }
 
+class ClearTraitsFilters {}
+
 class DrawMonsterGroups {}
 
 AppState filtersReducer(AppState state, dynamic action) {
+  state = state.clone();
   if (action is UpdateTraitFilterAction) {
-    state = state.clone();
     state.traitsFilters[action.trait] = action.value;
   } else if (action is ChangeNumberOfGroupsAction) {
-    state = state.clone();
     state.numberOfGroups = action.number;
   } else if (action is DrawMonsterGroups) {
-    state = state.clone();
     state.foundMonsters = randomizeMonsterBy(state.numberOfGroups,
         traits: getAllEnabled(state.traitsFilters),
         expansions: getAllEnabled(state.expansionsFilters));
   } else if (action is UpdateExpansionFilterAction) {
-    state = state.clone();
     state.expansionsFilters[action.expansion] = action.value;
+  } else if (action is ClearTraitsFilters) {
+    state.traitsFilters
+        .forEach((Trait k, bool v) => state.traitsFilters[k] = false);
   }
 
   return state;

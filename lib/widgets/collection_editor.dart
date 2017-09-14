@@ -37,8 +37,8 @@ class CollectionEditorState extends State<CollectionEditor>
   @override
   Widget build(BuildContext context) {
     var tabs = [
-      new Tab(text: 'Expansions'),
-      new Tab(text: 'Lieutenants'),
+      new Tab(text: 'EXPANSIONS'),
+      new Tab(text: 'LIEUTENANTS'),
     ];
 
     return new Scaffold(
@@ -66,12 +66,13 @@ class ExpansionsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return new GridView.count(
       primary: false,
       padding: const EdgeInsets.all(8.0),
       crossAxisSpacing: 4.0,
       mainAxisSpacing: 4.0,
-      crossAxisCount: 2,
+      crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
       children: Expansion.values
           .map((Expansion e) => new ExpansionTile(store, e))
           .toList(),

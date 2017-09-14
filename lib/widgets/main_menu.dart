@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 class MainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Descent 2E Randomizer'),
       ),
       body: new GridView.count(
         padding: const EdgeInsets.all(8.0),
-        crossAxisCount: 1,
+        crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
         mainAxisSpacing: 4.0,
+        crossAxisSpacing: 4.0,
         children: <Widget>[
           new MenuCard(
             'Collection',
@@ -54,8 +56,7 @@ class MenuCard extends StatelessWidget {
         }
       },
       child: new GridTile(
-        child:
-        new Container(
+        child: new Container(
             padding: const EdgeInsets.all(8.0),
             decoration: new BoxDecoration(color: Colors.black54),
             child: new Image.asset(photoUri)),
