@@ -223,15 +223,57 @@ class LieutenantPack {
   static const LieutenantPack splig =
       const LieutenantPack._('Splig', 'splig.png');
   static const LieutenantPack belthir =
-      const LieutenantPack._('Belthir', 'splig.png');
+      const LieutenantPack._('Belthir', 'belthir.png');
   static const LieutenantPack zachareth =
-      const LieutenantPack._('Zachareth', 'splig.png');
+      const LieutenantPack._('Zachareth', 'zachareth.png');
+  static const LieutenantPack eliza_farrow =
+      const LieutenantPack._('Eliza Farrow', 'eliza_farrow.png');
+  static const LieutenantPack merick_farrow =
+      const LieutenantPack._('Merick Farrow', 'merick_farrow.png');
+  static const LieutenantPack alrick_farrow =
+      const LieutenantPack._('Alric Farrow', 'alric_farrow.png');
+  static const LieutenantPack valyndra =
+      const LieutenantPack._('Valyndra', 'valyndra.png');
+  static const LieutenantPack raythen =
+      const LieutenantPack._('Raythen', 'raythen.png');
+  static const LieutenantPack queenAriad =
+      const LieutenantPack._('Queen Ariad', 'queen_ariad.png');
+  static const LieutenantPack bolGoreth =
+      const LieutenantPack._("Bol'Goreth", 'bol_goreth.png');
+  static const LieutenantPack rylanOlliven =
+      const LieutenantPack._('Rylan Olliven', 'rylan_olliven.png');
+  static const LieutenantPack verminous =
+      const LieutenantPack._('Verminuous', 'verminous.png');
+  static const LieutenantPack tristayneOlliven =
+      const LieutenantPack._('Tristayne Olliven', 'tristayne_olliven.png');
+  static const LieutenantPack garganeMirklace =
+      const LieutenantPack._('Gargan Mirklace', 'gargane_mirklace.png');
+  static const LieutenantPack skarn =
+      const LieutenantPack._('Skarn', 'skarn.png');
+  static const LieutenantPack zarihell =
+      const LieutenantPack._('Zarihell', 'zarihell.png');
+  static const LieutenantPack ardusIxErebus =
+      const LieutenantPack._('Ardus Ix Erebus', 'ardus_ix_erebus.png');
 
   static List<LieutenantPack> values = [
     splig,
     belthir,
     zachareth,
-  ];
+    eliza_farrow,
+    merick_farrow,
+    alrick_farrow,
+    valyndra,
+    queenAriad,
+    raythen,
+    bolGoreth,
+    rylanOlliven,
+    tristayneOlliven,
+    verminous,
+    garganeMirklace,
+    skarn,
+    zarihell,
+    ardusIxErebus,
+  ]..sort((a, b) => a.name.compareTo(b.name));
 
   String get assetPath => 'lib/assets/lieutenants/$assetName';
 }

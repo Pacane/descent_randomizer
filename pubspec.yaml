@@ -42,6 +42,23 @@ flutter:
     - lib/assets/chains_that_rust.png
     - lib/assets/base_set.png
     - lib/assets/lieutenants/splig.png
+    - lib/assets/lieutenants/belthir.png
+    - lib/assets/lieutenants/alric_farrow.png
+    - lib/assets/lieutenants/merick_farrow.png
+    - lib/assets/lieutenants/eliza_farrow.png
+    - lib/assets/lieutenants/zachareth.png
+    - lib/assets/lieutenants/valyndra.png
+    - lib/assets/lieutenants/raythen.png
+    - lib/assets/lieutenants/queen_ariad.png
+    - lib/assets/lieutenants/bol_goreth.png
+    - lib/assets/lieutenants/rylan_olliven.png
+    - lib/assets/lieutenants/verminous.png
+    - lib/assets/lieutenants/tristayne_olliven.png
+    - lib/assets/lieutenants/gargane_mirklace.png
+    - lib/assets/lieutenants/skarn.png
+    - lib/assets/lieutenants/zarihell.png
+    - lib/assets/lieutenants/ardus_ix_erebus.png
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

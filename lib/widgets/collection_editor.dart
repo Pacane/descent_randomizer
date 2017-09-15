@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import '../app_state.dart';
@@ -20,6 +19,8 @@ class CollectionEditorState extends State<CollectionEditor>
 
   TabController _tabController;
 
+  CollectionEditorState(this.store);
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +33,6 @@ class CollectionEditorState extends State<CollectionEditor>
     super.dispose();
   }
 
-  CollectionEditorState(this.store);
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +186,8 @@ class _GridTitleText extends StatelessWidget {
       fit: BoxFit.scaleDown,
       alignment: FractionalOffset.centerLeft,
       child: new Row(children: <Widget>[
+        new Checkbox(value: value, onChanged: (_) {}),
         new Text(text),
-        new Checkbox(value: value, onChanged: (_) {})
       ]),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:descent_randomizer/descent.dart';
 import 'package:descent_randomizer/randomizer.dart';
 
-main() {
+void main() {
   group('Base expansion only', () {
     test('Filter by trait only', () {
       var expected = [

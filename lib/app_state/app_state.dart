@@ -8,16 +8,6 @@ class AppState {
   List<Monster> foundMonsters;
   Map<Expansion, bool> expansionsFilters;
 
-  AppState clone() {
-    var newState = new AppState._(
-      new Map.from(traitsFilters),
-      numberOfGroups,
-      new List.from(foundMonsters),
-      new Map.from(expansionsFilters),
-    );
-    return newState;
-  }
-
   AppState.initial()
       : numberOfGroups = 2,
         traitsFilters = {},
@@ -38,6 +28,15 @@ class AppState {
 
   AppState._(this.traitsFilters, this.numberOfGroups, this.foundMonsters,
       this.expansionsFilters);
+  AppState clone() {
+    var newState = new AppState._(
+      new Map.from(traitsFilters),
+      numberOfGroups,
+      new List.from(foundMonsters),
+      new Map.from(expansionsFilters),
+    );
+    return newState;
+  }
 }
 
 class UpdateTraitFilterAction {
@@ -64,8 +63,8 @@ class ClearTraitsFilters {}
 
 class DrawMonsterGroups {}
 
-AppState filtersReducer(AppState state, dynamic action) {
-  state = state.clone();
+AppState filtersReducer(AppState s, dynamic action) {
+  var state = s.clone();
   if (action is UpdateTraitFilterAction) {
     state.traitsFilters[action.trait] = action.value;
   } else if (action is ChangeNumberOfGroupsAction) {
