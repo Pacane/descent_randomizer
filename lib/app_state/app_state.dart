@@ -99,6 +99,7 @@ class ChangeNumberOfGroupsAction extends Object with IsAction {
   final int number;
 
   ChangeNumberOfGroupsAction(this.number);
+
   @override
   AppState handle(AppState state) {
     state.numberOfGroups = number;
