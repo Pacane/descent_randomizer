@@ -9,8 +9,9 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  static final Store<AppState> store =
-      new Store(combineReducers([filtersReducer]), initialState: new AppState.initial());
+  static final Store<AppState> store = new Store(
+      combineReducers([filtersReducer as Reducer]),
+      initialState: new AppState.initial());
   final Map<String, WidgetBuilder> routes = {
     '/': (BuildContext c) => new MainMenu(),
     '/randomize-monsters': (BuildContext c) => new MonstersPage(store),

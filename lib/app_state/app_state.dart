@@ -52,55 +52,82 @@ class AppState {
   }
 }
 
-class UpdateTraitFilterAction {
+abstract class IsAction {
+  AppState handle(AppState state);
+}
+
+class UpdateTraitFilterAction extends Object with IsAction {
   final Trait trait;
   final bool value;
 
   UpdateTraitFilterAction(this.trait, this.value);
+
+  @override
+  AppState handle(AppState state) {
+    state.traitsFilters[trait] = value;
+    return state;
+  }
 }
 
-class UpdateExpansionFilterAction {
+class UpdateExpansionFilterAction extends Object with IsAction {
   final Expansion expansion;
 
   UpdateExpansionFilterAction(this.expansion);
+
+  @override
+  AppState handle(AppState state) {
+    var oldValue = state.expansionsFilters[expansion];
+    state.expansionsFilters[expansion] = !oldValue;
+    return state;
+  }
 }
 
-class UpdateLieutenantsFiltersAction {
+class UpdateLieutenantsFiltersAction extends Object with IsAction {
   final LieutenantPack lieutenantPack;
 
   UpdateLieutenantsFiltersAction(this.lieutenantPack);
+
+  @override
+  AppState handle(AppState state) {
+    var oldValue = state.lieutenantsFilters[lieutenantPack];
+    state.lieutenantsFilters[lieutenantPack] = !oldValue;
+    return state;
+  }
 }
 
-class ChangeNumberOfGroupsAction {
+class ChangeNumberOfGroupsAction extends Object with IsAction {
   final int number;
 
   ChangeNumberOfGroupsAction(this.number);
+  @override
+  AppState handle(AppState state) {
+    state.numberOfGroups = number;
+    return state;
+  }
 }
 
-class ClearTraitsFilters {}
+class ClearTraitsFilters extends Object with IsAction {
+  @override
+  AppState handle(AppState state) {
+    state.traitsFilters
+        .forEach((Trait k, bool v) => state.traitsFilters[k] = false);
+    return state;
+  }
+}
 
-class DrawMonsterGroups {}
-
-AppState filtersReducer(AppState state, dynamic action) {
-  state = state.clone();
-  if (action is UpdateTraitFilterAction) {
-    state.traitsFilters[action.trait] = action.value;
-  } else if (action is ChangeNumberOfGroupsAction) {
-    state.numberOfGroups = action.number;
-  } else if (action is DrawMonsterGroups) {
+class DrawMonsterGroups extends Object with IsAction {
+  @override
+  AppState handle(AppState state) {
     state.foundMonsters = randomizeMonsterBy(state.numberOfGroups,
         traits: getAllEnabled(state.traitsFilters),
         expansions: getAllEnabled(state.expansionsFilters));
-  } else if (action is UpdateExpansionFilterAction) {
-    var oldValue = state.expansionsFilters[action.expansion];
-    state.expansionsFilters[action.expansion] = !oldValue;
-  } else if (action is UpdateLieutenantsFiltersAction) {
-    var oldValue = state.lieutenantsFilters[action.lieutenantPack];
-    state.lieutenantsFilters[action.lieutenantPack] = !oldValue;
-  } else if (action is ClearTraitsFilters) {
-    state.traitsFilters
-        .forEach((Trait k, bool v) => state.traitsFilters[k] = false);
+    return state;
   }
+}
+
+AppState filtersReducer<T extends IsAction>(AppState state, T action) {
+  state = state.clone();
+  state = action.handle(state);
 
   return state;
 }
