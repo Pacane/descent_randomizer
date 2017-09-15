@@ -7,12 +7,14 @@ class AppState {
   int numberOfGroups;
   List<Monster> foundMonsters;
   Map<Expansion, bool> expansionsFilters;
+  Map<LieutenantPack, bool> lieutenantsFilters;
 
   AppState.initial()
       : numberOfGroups = 2,
         traitsFilters = {},
         foundMonsters = [],
-        expansionsFilters = {} {
+        expansionsFilters = {},
+        lieutenantsFilters = {} {
     for (var trait in Trait.values) {
       traitsFilters[trait] = false;
     }
@@ -24,16 +26,27 @@ class AppState {
         expansionsFilters[expansion] = false;
       }
     }
+
+    for (var lieutenant in LieutenantPack.values) {
+      lieutenantsFilters[lieutenant] = false;
+    }
   }
 
-  AppState._(this.traitsFilters, this.numberOfGroups, this.foundMonsters,
-      this.expansionsFilters);
+  AppState._(
+    this.traitsFilters,
+    this.numberOfGroups,
+    this.foundMonsters,
+    this.expansionsFilters,
+    this.lieutenantsFilters,
+  );
+
   AppState clone() {
     var newState = new AppState._(
       new Map.from(traitsFilters),
       numberOfGroups,
       new List.from(foundMonsters),
       new Map.from(expansionsFilters),
+      new Map.from(lieutenantsFilters),
     );
     return newState;
   }
@@ -48,9 +61,14 @@ class UpdateTraitFilterAction {
 
 class UpdateExpansionFilterAction {
   final Expansion expansion;
-  final bool value;
 
-  UpdateExpansionFilterAction(this.expansion, this.value);
+  UpdateExpansionFilterAction(this.expansion);
+}
+
+class UpdateLieutenantsFiltersAction {
+  final LieutenantPack lieutenantPack;
+
+  UpdateLieutenantsFiltersAction(this.lieutenantPack);
 }
 
 class ChangeNumberOfGroupsAction {
@@ -63,8 +81,8 @@ class ClearTraitsFilters {}
 
 class DrawMonsterGroups {}
 
-AppState filtersReducer(AppState s, dynamic action) {
-  var state = s.clone();
+AppState filtersReducer(AppState state, dynamic action) {
+  state = state.clone();
   if (action is UpdateTraitFilterAction) {
     state.traitsFilters[action.trait] = action.value;
   } else if (action is ChangeNumberOfGroupsAction) {
@@ -74,7 +92,11 @@ AppState filtersReducer(AppState s, dynamic action) {
         traits: getAllEnabled(state.traitsFilters),
         expansions: getAllEnabled(state.expansionsFilters));
   } else if (action is UpdateExpansionFilterAction) {
-    state.expansionsFilters[action.expansion] = action.value;
+    var oldValue = state.expansionsFilters[action.expansion];
+    state.expansionsFilters[action.expansion] = !oldValue;
+  } else if (action is UpdateLieutenantsFiltersAction) {
+    var oldValue = state.lieutenantsFilters[action.lieutenantPack];
+    state.lieutenantsFilters[action.lieutenantPack] = !oldValue;
   } else if (action is ClearTraitsFilters) {
     state.traitsFilters
         .forEach((Trait k, bool v) => state.traitsFilters[k] = false);

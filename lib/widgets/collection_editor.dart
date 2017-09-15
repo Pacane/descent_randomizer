@@ -33,7 +33,6 @@ class CollectionEditorState extends State<CollectionEditor>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     var tabs = [
@@ -110,17 +109,20 @@ class LieutenantTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var onTap =
+        () => store.dispatch(new UpdateLieutenantsFiltersAction(lieutenant));
     return new StoreProvider(
         store: store,
         child: new StoreConnector<AppState, bool>(
-          builder: (context, bool expansionEnabled) => new GestureDetector(
-                onTap: () => {},
+          builder: (context, bool lieutenantEnabled) => new GestureDetector(
+                onTap: onTap,
                 child: new GridTile(
                   footer: new GridTileBar(
                     backgroundColor: Colors.black54,
                     subtitle: new _GridTitleText(
                       lieutenant.name,
-                      true,
+                      lieutenantEnabled,
+                      onTap,
                     ),
                   ),
                   child: new Container(
@@ -132,7 +134,7 @@ class LieutenantTile extends StatelessWidget {
                   ),
                 ),
               ),
-          converter: (store) => store.state.expansionsFilters[lieutenant],
+          converter: (store) => store.state.lieutenantsFilters[lieutenant],
         ));
   }
 }
@@ -145,18 +147,20 @@ class ExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var onTap =
+        () => store.dispatch(new UpdateExpansionFilterAction(expansion));
     return new StoreProvider(
         store: store,
         child: new StoreConnector<AppState, bool>(
           builder: (context, bool expansionEnabled) => new GestureDetector(
-                onTap: () => store.dispatch(new UpdateExpansionFilterAction(
-                    expansion, !store.state.expansionsFilters[expansion])),
+                onTap: onTap,
                 child: new GridTile(
                   footer: new GridTileBar(
                     backgroundColor: Colors.black54,
                     subtitle: new _GridTitleText(
                       expansion.name,
                       expansionEnabled,
+                      onTap,
                     ),
                   ),
                   child: new Container(
@@ -175,8 +179,9 @@ class ExpansionTile extends StatelessWidget {
 
 class _GridTitleText extends StatelessWidget {
   final bool value;
+  final void Function() onChanged;
 
-  _GridTitleText(this.text, this.value);
+  _GridTitleText(this.text, this.value, this.onChanged);
 
   final String text;
 
@@ -186,7 +191,9 @@ class _GridTitleText extends StatelessWidget {
       fit: BoxFit.scaleDown,
       alignment: FractionalOffset.centerLeft,
       child: new Row(children: <Widget>[
-        new Checkbox(value: value, onChanged: (_) {}),
+        new Checkbox(
+            value: value,
+            onChanged: (_) => onChanged()),
         new Text(text),
       ]),
     );

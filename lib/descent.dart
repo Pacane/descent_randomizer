@@ -276,4 +276,10 @@ class LieutenantPack {
   ]..sort((a, b) => a.name.compareTo(b.name));
 
   String get assetPath => 'lib/assets/lieutenants/$assetName';
+
+  @override
+  bool operator ==(covariant LieutenantPack other) => name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
